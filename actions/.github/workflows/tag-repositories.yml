@@ -1,0 +1,19 @@
+name: tagRepositories(tag, branch, repository)
+
+jobs:
+  tag-repositories:
+    runs-on: ubuntu-latest
+    name: Tag Repositorie
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.repository }}
+          ref: ${{ inputs.branch }}
+          token: ${{ secrets.PAT }}
+      - name: Tag Repo and push
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a ${{ inputs.tag }} -m "Release ${{ inputs.tag }}"
+          git push origin ${{ inputs.tag }}

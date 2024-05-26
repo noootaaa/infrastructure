@@ -1,0 +1,28 @@
+# Create ingress for my keycloak service with traefik
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    traefik.ingress.kubernetes.io/redirect-entry-point: https
+    traefik.ingress.kubernetes.io/redirect-permanent: "true"
+    traefik.ingress.kubernetes.io/ssl-redirect: "true"
+  name: infrastructure-keycloak
+  namespace: {{ .Release.Namespace }}
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: auth.nooota.bonnal.cloud
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: infrastructure-keycloak
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - auth.nooota.bonnal.cloud
+    secretName: auth.nooota.bonnal.cloud-tls

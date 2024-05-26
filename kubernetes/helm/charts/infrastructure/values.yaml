@@ -1,0 +1,22 @@
+postgresql:
+  architecture: replication
+  auth:
+    postgresUser: postgres
+    postgresPassword: postgres
+
+keycloak:
+  proxy: edge
+  production: true
+  auth:
+    adminUser: admin
+    adminPassword: changme
+  externalDatabase:
+    host: "infrastructure-postgresql-primary"
+    user: postgres
+    database: keycloak
+    password: postgres
+  postgresql:
+    enabled: false
+  extraEnvVars:
+    - name: KC_HOSTNAME
+      value: auth.nooota.bonnal.cloud
