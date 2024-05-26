@@ -90,6 +90,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
+          push: true
           context: ${{ inputs.context }}
           build-args: ${{ inputs.build-args }}
           tags: ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/${{ inputs.repository }}:${{ env.VERSION }}
