@@ -34,8 +34,8 @@ on:
         required: true
       CONTAINER_REGISTRY_USERNAME:
         required: true
-      # CONTAINER_REGISTRY_ENDPOINT:
-      #   required: true
+      CONTAINER_REGISTRY_ENDPOINT:
+        required: true
       PAT:
         required: true
 
