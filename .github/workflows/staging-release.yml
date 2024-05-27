@@ -47,6 +47,8 @@ jobs:
       tag: ${{ inputs.tag }}
       repository: ${{ inputs.repository }}
       branch: 'main'
+    secrets:
+      PAT: ${{ secrets.PAT }}
   build-and-push:
     uses: noootaaa/infrastructure/.github/workflows/docker-ci.yml@main
     with:
