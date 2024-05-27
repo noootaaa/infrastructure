@@ -76,6 +76,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.repository }}
+          ref: ${{ inputs.tag }}
+          token: ${{ secrets.PAT }}
       - name: Set version
         id: set-version
         run: echo "VERSION=${{ inputs.tag }}" >> $GITHUB_ENV
