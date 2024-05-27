@@ -1,9 +1,30 @@
 name: tagRepositories(tag, branch, repository)
 
+on:
+  workflow_call:
+    inputs:
+      tag:
+        description: 'Tag to release'
+        type: string
+        required: true
+      branch:
+        description: 'Branch to tag'
+        type: string
+        required: true
+      repository:
+        description: 'Repository to release'
+        required: true
+        type: string
+    secrets:
+      PAT:
+        description: 'Personal Access Token'
+        required: true
+
+
 jobs:
   tag-repositories:
     runs-on: ubuntu-latest
-    name: Tag Repositorie
+    name: Tag Repository
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

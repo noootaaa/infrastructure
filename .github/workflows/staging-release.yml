@@ -1,0 +1,60 @@
+name: devRelease(tag)
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to release'
+        required: true
+      repository:
+        description: 'Repository to release'
+        required: true
+      image-name:
+        description: 'Image name'
+        required: true
+  workflow_call:
+    inputs:
+      tag:
+        description: 'Tag to release'
+        type: string
+        required: true
+      repository:
+        description: 'Repository to release'
+        required: true
+        type: string
+      image-name:
+        description: 'Image name'
+        required: true
+        type: string
+    secrets:
+      CONTAINER_REGISTRY_TOKEN:
+        required: true
+      CONTAINER_REGISTRY_USERNAME:
+        required: true
+      CONTAINER_REGISTRY_ENDPOINT:
+        required: true
+      PAT:
+        required: true
+      # KUBECONFIG_DEV:
+      #   description: 'Kubeconfig for dev cluster'
+      #   required: true
+
+jobs:
+  tag-repositories:
+    name: Tag repositories
+    uses: noootaaa/infrastructure/.github/workflows/tag-repositories.yml@main
+    with:
+      tag: ${{ inputs.tag }}
+      repository: ${{ inputs.repository }}
+      branch: 'main'
+  build-and-push:
+    uses: noootaaa/infrastructure/.github/workflows/docker-ci.yml@main
+    with:
+      image-name: ${{ inputs.image-name }}
+      repository: ${{ inputs.repository }}
+      tag: ${{ inputs.tag }}
+    secrets:
+      CONTAINER_REGISTRY_TOKEN: ${{ secrets.PAT }}
+      CONTAINER_REGISTRY_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      CONTAINER_REGISTRY_ENDPOINT: ghcr.io
+      PAT: ${{ secrets.PAT }}
